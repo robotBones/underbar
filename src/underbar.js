@@ -3,7 +3,7 @@
 var _ = {};
 
 (function() {
-
+  "use strict;"
   // Returns whatever value is passed as the argument. This function doesn't
   // seem very useful, but remember it--if a function needs to provide an
   // iterator when the user does not pass one in, this will be handy.
@@ -211,7 +211,7 @@ var _ = {};
       } else if ( !iterator(item) ) {
         return false;
       } else {
-        return isAllTrue;
+        return isAllTrue; // hands accumulated value to itself
       }
     }, true);
   };
@@ -220,6 +220,17 @@ var _ = {};
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    var isTrue = false;
+
+    if (typeof iterator === 'undefined') {
+      iterator = _.identity;
+    }
+
+    _.every(collection, function (item, i, collection) {
+      if ( iterator(item) ) { isTrue = true; }
+    });
+
+    return isTrue;
   };
 
 
