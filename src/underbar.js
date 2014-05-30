@@ -39,8 +39,14 @@ var _ = {};
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    var copy = array.slice()
-    return n === undefined ? array[array.length - 1] : _.first(copy.reverse(), n).reverse();
+    var len = array.length;
+    if (n === undefined) {
+      return array[len -1];
+    } else if (n >= len) {
+      return array;
+    } else {
+      return array.slice(len - n, len);
+    }
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -79,12 +85,19 @@ var _ = {};
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var result = [];
+    _.each(collection, function (item){
+      if (test(item)) { result.push(item); }
+    });
+
+    return result;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
     // TIP: see if you can re-use _.filter() here, without simply
     // copying code in and modifying it
+    return _.filter(collection, function (){ return !test.apply(null, arguments); });
   };
 
   // Produce a duplicate-free version of the array.
