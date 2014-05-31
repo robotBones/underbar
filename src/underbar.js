@@ -343,7 +343,6 @@ var _ = {};
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
     var args = Array.prototype.slice.apply(arguments, [2, arguments.length]);
-    console.log(args);
     var timerId = setTimeout(function() {
       func.apply(null, args);
       clearInterval(timerId);
@@ -362,6 +361,19 @@ var _ = {};
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
   _.shuffle = function(array) {
+    var shuffled = [];
+    var randIndex;
+    // make copy of array
+    var copy = array.slice();
+
+    while (copy.length > 0) {
+      // random integer bw array indexes
+      randIndex = Math.floor(Math.random() * copy.length);
+      // removing random item from copy and pushing to shuffled
+      shuffled.push(copy.splice(randIndex, 1)[0]);
+    }
+
+    return shuffled;
   };
 
 
