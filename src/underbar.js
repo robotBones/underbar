@@ -328,7 +328,7 @@ var _ = {};
       if (memo.hasOwnProperty(arg)) {
         return memo[arg];
       } else {
-        result = func.call(null, arg);
+        result = func(arg);
         memo[arg] = result;
         return result;
       }
