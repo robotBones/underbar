@@ -60,7 +60,7 @@ var _ = {};
         iterator(collection[i], i, collection);
       }
     } else {
-      for (i in collection) {
+      for (var i in collection) {
         iterator(collection[i], i, collection);
       }
     }
@@ -253,6 +253,17 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var to = obj;
+    var objs = Array.prototype.slice.apply(arguments, [1, arguments.length]);
+    _.each(objs, function (from) {
+      for (var prop in from) {
+        if (from.hasOwnProperty(prop)) {
+          to[prop] = from[prop];
+        }
+      }
+    });
+
+    return to;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
