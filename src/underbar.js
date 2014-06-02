@@ -345,7 +345,7 @@ var _ = {};
     var args = Array.prototype.slice.apply(arguments, [2, arguments.length]);
     var timerId = setTimeout(function() {
       func.apply(null, args);
-      clearInterval(timerId);
+      clearTimeout(timerId);
     }, wait);
   };
 
