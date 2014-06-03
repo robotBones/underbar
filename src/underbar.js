@@ -60,8 +60,10 @@ var _ = {};
         iterator(collection[i], i, collection);
       }
     } else {
-      for (var i in collection) {
-        iterator(collection[i], i, collection);
+      for (var key in collection) {
+        if (collection.hasOwnProperty(key)) {
+          iterator(collection[key], key, collection);
+        }
       }
     }
   };
@@ -256,11 +258,9 @@ var _ = {};
     var to = obj;
     var objs = Array.prototype.slice.apply(arguments, [1, arguments.length]);
     _.each(objs, function (from) {
-      for (var prop in from) {
-        if (from.hasOwnProperty(prop)) {
-          to[prop] = from[prop];
-        }
-      }
+      _.each(from, function (val, key) {
+        to[key] = val;
+      })
     });
 
     return to;
