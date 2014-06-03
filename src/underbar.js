@@ -260,7 +260,7 @@ var _ = {};
     _.each(objs, function (from) {
       _.each(from, function (val, key) {
         to[key] = val;
-      })
+      });
     });
 
     return to;
@@ -272,11 +272,11 @@ var _ = {};
     var to = obj;
     var objs = Array.prototype.slice.apply(arguments, [1, arguments.length]);
     _.each(objs, function (from) {
-      for (var prop in from) {
-        if (from.hasOwnProperty(prop) && !to.hasOwnProperty(prop)) {
-          to[prop] = from[prop];
+      _.each(from, function (val, key) {
+        if (!to.hasOwnProperty(key)) {
+          to[key] = val;
         }
-      }
+      });
     });
 
     return to;
