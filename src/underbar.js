@@ -126,8 +126,8 @@ var _ = {};
     // like each(), but in addition to running the operation on all
     // the members, it also maintains an array of results.
     var results = [];
-    _.each(collection, function (item) {
-      results.push(iterator(item));
+    _.each(collection, function (item, index, collection) {
+      results.push(iterator(item, index, collection));
     });
 
     return results;
@@ -388,6 +388,7 @@ var _ = {};
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+
   };
 
   // Zip together two or more arrays with elements of the same index
@@ -396,6 +397,12 @@ var _ = {};
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
+    var result;
+    _.map(arguments, function(arr) {
+
+      _.pluck(arr, function() {});
+
+    });
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
