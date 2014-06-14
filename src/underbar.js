@@ -388,7 +388,37 @@ var _ = {};
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function(collection, iterator) {
+    var collectionCopy = collection.slice();
+    var endIndex = collectionCopy.length - 1;
 
+    var byProperty = function(iterator) {
+      if (typeof iterator === 'string') {
+        return function (item) {
+          return item[iterator];
+        }
+      } else if (typeof iterator === 'function') {
+        return iterator;
+      }
+    };
+
+    var propOf = byProperty(iterator);
+
+    for (var i = 0; i < collectionCopy.length; i++) {
+      _.each(collectionCopy, function (item, index, collectionCopy){
+
+        if (index < endIndex) { // if not at the last item
+          var nextItem = collectionCopy.slice(index + 1, index + 2)[0];
+          var currentItem = collectionCopy.slice(index, index + 1)[0];
+
+          if (propOf(currentItem) > propOf(nextItem) || typeof propOf(item) === 'undefined') {
+            collectionCopy[index] = nextItem;
+            collectionCopy[index + 1] = currentItem;
+          }
+        }
+      });
+    }
+
+    return collectionCopy;
   };
 
   // Zip together two or more arrays with elements of the same index
@@ -397,12 +427,8 @@ var _ = {};
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
-    var result;
-    _.map(arguments, function(arr) {
-
-      _.pluck(arr, function() {});
-
-    });
+    // var length = _.filter(arguments, function(fieldArr) {fieldArr.length})
+    // _.reduce(arguments, _.map(fieldArr, ),[]);
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
