@@ -344,8 +344,10 @@ var _ = {};
   // parameter. For example _.delay(someFunction, 500, 'a', 'b') will
   // call someFunction('a', 'b') after 500ms
   _.delay = function(func, wait) {
+    console.log('in delay:', arguments);
     var args = Array.prototype.slice.apply(arguments, [2, arguments.length]);
     var timerId = setTimeout(function() {
+      console.log('firing off', args, wait);
       func.apply(null, args);
       clearTimeout(timerId);
     }, wait);
@@ -515,6 +517,34 @@ var _ = {};
   //
   // See the Underbar readme for details.
   _.throttle = function(func, wait) {
+    var scheduled = false;
+    var lastInvoked = 0;
+    var timePassed;
+    var recentResult;
+
+    var funcWrap = function() {
+      scheduled = false;
+      lastInvoked = new Date();
+      recentResult = func.apply(null, arguments);
+    };
+
+    return function throttled() {
+      var args = Array.prototype.slice.call(arguments);
+      var argsForDelay;
+      timePassed = (new Date) - lastInvoked;
+      lastInvoked = lastInvoked || new Date();
+
+      if (!scheduled && timePassed > wait) {
+        recentResult = func.apply(null, args);
+        lastInvoked = new Date();
+      } else if (timePassed < wait && !scheduled) {
+        argsForDelay = [funcWrap, wait-timePassed].concat(args);
+        scheduled = true;
+        _.delay.apply(null, argsForDelay);
+      }
+
+      return recentResult;
+    }
   };
 
 }).call(this);
