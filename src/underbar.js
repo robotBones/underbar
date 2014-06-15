@@ -403,6 +403,7 @@ var _ = {};
 
     var propOf = byProperty(iterator);
 
+    // bubble sort
     for (var i = 0; i < collectionCopy.length; i++) {
       _.each(collectionCopy, function (item, index, collectionCopy){
 
@@ -436,6 +437,24 @@ var _ = {};
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+    var result = result || [];
+
+    var diveIn = function(obj) {
+      if (Array.isArray(obj)) {
+        for (var i = 0; i < obj.length; i++) {
+          var item = obj[i];
+          if ( !Array.isArray(item) ) {
+            result.push(item);
+          } else {
+            diveIn(item);
+          }
+        }
+      }
+    };
+
+    diveIn(nestedArray);
+
+    return result;
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
