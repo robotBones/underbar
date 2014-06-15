@@ -391,7 +391,7 @@ var _ = {};
     var collectionCopy = collection.slice();
     var endIndex = collectionCopy.length - 1;
 
-    var byProperty = function(iterator) {
+    var byCriterion = function(iterator) {
       if (typeof iterator === 'string') {
         return function (item) {
           return item[iterator];
@@ -401,9 +401,9 @@ var _ = {};
       }
     };
 
-    var propOf = byProperty(iterator);
+    var propOf = byCriterion(iterator);
 
-    // bubble sort
+    // bubble sort -> [lowest value,...,highest value]
     for (var i = 0; i < collectionCopy.length; i++) {
       _.each(collectionCopy, function (item, index, collectionCopy){
 
@@ -428,8 +428,24 @@ var _ = {};
   // Example:
   // _.zip(['a','b','c','d'], [1,2,3]) returns [['a',1], ['b',2], ['c',3], ['d',undefined]]
   _.zip = function() {
-    // var length = _.filter(arguments, function(fieldArr) {fieldArr.length})
-    // _.reduce(arguments, _.map(fieldArr, ),[]);
+    var result = [];
+    var temp = [];
+    var i = -1;
+    // sortBy() won't operate on the arguments object
+    var args = Array.prototype.slice.call(arguments);
+    var longest = _.last(_.sortBy(args, 'length')).length - 1;
+
+    while(i < longest) {
+      i++;
+      temp = [];
+
+      for (var argIndex = 0; argIndex < arguments.length; argIndex++) {
+        var arr = arguments[argIndex];
+        temp.push(arr[i]);;
+      }
+      result.push(temp);
+    }
+    return result;
   };
 
   // Takes a multidimensional array and converts it to a one-dimensional array.
