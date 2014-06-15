@@ -184,8 +184,9 @@ var _ = {};
       result = accumulator;
     }
 
-    _.each(collection, function (val) {
-      result = iterator(result, val);
+    _.each(collection, function (val, index, collection) {
+      // iterator has to return a value or result isn't accumulated
+      result = iterator(result, val, index, collection);
     });
 
     return result;
@@ -195,6 +196,7 @@ var _ = {};
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
     // terms of reduce(). Here's a freebie to demonstrate!
+    // iterates through entire collection regardless if target is already found
     return _.reduce(collection, function(wasFound, item) {
       if (wasFound) {
         return true;
@@ -476,6 +478,12 @@ var _ = {};
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function() {
+    var args = Array.prototype.slice.call(arguments);
+
+    return _.filter(args[0],
+      function (item) {
+        return _.contains(args[1], item);
+      });
   };
 
   // Take the difference between one array and a number of other arrays.
