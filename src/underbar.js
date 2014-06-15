@@ -432,13 +432,14 @@ var _ = {};
   _.zip = function() {
     var result = [];
     var temp = [];
-    var i = -1;
-    // sortBy() won't operate on the arguments object
-    var args = Array.prototype.slice.call(arguments);
-    var longest = _.last(_.sortBy(args, 'length')).length - 1;
+    var i = 0;
+
+    var longest = _.reduce(arguments,
+      function (leader, contender) {
+        return (contender.length > leader) ? contender.length : leader;
+    }, 0);
 
     while(i < longest) {
-      i++;
       temp = [];
 
       for (var argIndex = 0; argIndex < arguments.length; argIndex++) {
@@ -446,6 +447,7 @@ var _ = {};
         temp.push(arr[i]);;
       }
       result.push(temp);
+      i++;
     }
     return result;
   };
