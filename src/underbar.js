@@ -487,7 +487,7 @@ var _ = {};
 
     return _.filter(main,
       function (item) {
-        return _.some(others, function (other) {
+        return _.every(others, function (other) {
           return _.contains(other, item);
         });
       });
