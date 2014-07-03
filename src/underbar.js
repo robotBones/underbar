@@ -224,19 +224,15 @@ var _ = {};
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-    var isTrue = false;
 
     if (typeof iterator === 'undefined') {
       iterator = _.identity;
     }
 
-    _.every(collection, function (item, i, collection) {
-      if ( iterator(item) ) { isTrue = true; }
+    return !_.every(collection, function (item, i, collection) {
+      return !iterator(item);
     });
-
-    return isTrue;
   };
-
 
   /**
    * OBJECTS
@@ -336,6 +332,7 @@ var _ = {};
       }
     };
   };
+
 
   // Delays a function for the given number of milliseconds, and then calls
   // it with the arguments supplied.
